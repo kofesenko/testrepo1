@@ -43,16 +43,12 @@ variable "vpc_cidr" {
   default     = "10.1.0.0/16"
 }
 
-variable "public_subnet" {
-  type        = list(string)
-  description = "Public Subnet"
-  default     = ["10.1.0.0/24"]
+variable "public_subnet_ids" {
+  type = set(string)
 }
 
-variable "private_subnet" {
-  type        = list(string)
-  description = "Private Subnet"
-  default     = ["10.1.12.0/24"]
+variable "private_subnet_ids" {
+  type = set(string)
 }
 
 variable "container_name" {

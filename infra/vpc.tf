@@ -1,13 +1,13 @@
-# Create VPC from module
-locals {
-  cidr_subnets = cidrsubnet("10.0.0.0/17", 4, 4, 4, 4, 4, 4)
-}
-module "vpc" {
+module "vpc_staging" {
   source = "../modules/vpc/"
 
-  infrastructure_environment = var.environment_name
-  vpc_cidr = "10.0.0.0/17"
-  azs = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  public_subnet = slice(local.cidr_subnets, 0, 3)
-  private_subnet = slice(local.cidr_subnets, 4, 6)
+  environment_name         = "Staging"
+  vpc_cidr                 = "10.1.0.0/16"
+  public_subnet_cidr_az  = ["10.1.0.0/24"]
+  private_subnet_cidr_az = ["10.1.12.0/24"]
+
+  additional_tags = {
+    Environment = "Staging"
+    Owner       = "Myself"
+  }
 }
