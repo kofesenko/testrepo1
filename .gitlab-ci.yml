@@ -1,0 +1,57 @@
+stages:
+  - infra
+  - build-publish
+  - destroy
+variables:
+  ECR_REGISTRY: 120029444489.dkr.ecr.eu-west-1.amazonaws.com
+  APP_NAME: web
+  AWS_REGION: eu-west-1
+  DOCKER_HOST: tcp://docker:2375
+
+
+infrastructure:
+  stage: infra
+  image:
+    name: hashicorp/terraform:light
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    before_script:
+      - cd backend_state/
+      - terraform init
+      - terraform apply -auto-approve
+    script:
+      - cd ../infra
+      - terraform init 
+      - terraform apply -auto-approve
+
+build-publish:
+  stage: build-publish
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
+  services:
+    - docker:dind
+  before_script:
+    - amazon-linux-extras install docker
+    - aws --version
+    - docker --version
+  script:
+    - cd app/
+    - docker build -t $ECR_REGISTRY/$APP_NAME:$CI_PIPELINE_IID .
+    - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+    - docker tag $ECR_REGISTRY/$APP_NAME:$CI_PIPELINE_IID $ECR_REGISTRY/$APP_NAME:latest
+    - aws ecr batch-delete-image --repository-name $APP_NAME --image-ids imageTag=latest
+    - docker push $ECR_REGISTRY/$APP_NAME:$CI_PIPELINE_IID
+    - docker push $ECR_REGISTRY/$APP_NAME:latest
+    
+destroy:
+  stage: destroy
+  before_script:
+  - terraform init
+  - terraform destroy -auto-approve
+  script: 
+  - terraform init
+  - terraform destroy -auto-approve
+    
+  
