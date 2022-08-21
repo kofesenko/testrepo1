@@ -22,7 +22,9 @@ variable "inbound_ports" {
   default     = ["22", "80"]
 }
 
-variable "ACCOUNT_ID" {}
+variable "ACCOUNT_ID" {
+  default = 120029444489
+}
 
 variable "container_port" {
   description = "python app container port"
@@ -36,21 +38,21 @@ variable "environment_name" {
 }
 
 variable "vpc_cidr" {
-  type = string
+  type        = string
   description = "VPC CIDR"
-  default = "10.1.0.0/16"
+  default     = "10.1.0.0/16"
 }
 
 variable "public_subnet" {
-  type = string
+  type        = list(string)
   description = "Public Subnet"
-  default = "10.1.0.0/24"
+  default     = ["10.1.0.0/24"]
 }
 
 variable "private_subnet" {
-  type = string
+  type        = list(string)
   description = "Private Subnet"
-  default = "10.1.12.0/24"
+  default     = ["10.1.12.0/24"]
 }
 
 variable "container_name" {

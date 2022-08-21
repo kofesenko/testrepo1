@@ -1,53 +1,24 @@
 variable "environment_name" {
-  type        = string
-  description = "Set environment name"
-  default     = ""
+    type = string
+    description = "Environment name"
 }
 
+variable "azs" {
+    type = list(string)
+    description = "AZs to create subnets into"
+}
 variable "vpc_cidr" {
-  type        = string
-  description = "VPC CIDR"
-  default     = ""
+    type = string
+    description = "IP range to use in the VPC"
+    default = "10.0.0.0/16"
 }
 
-variable "availability_zone" {
-  type        = list(string)
-  description = "Availability Zone"
-  default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+variable "public_subnet" {
+    type = list(string)
+    description = "Subnets to create for public network traffic, one per AZ"
 }
 
-variable "public_subnet_cidr_az_a" {
-  type        = list(string)
-  description = "Public subnet CIDR within AZ-a"
-  default     = []
-}
-
-variable "public_subnet_interfix" {
-  type        = string
-  description = "Give interfix to public subnet name"
-  default     = "public"
-}
-
-variable "private_subnet_cidr_az_a" {
-  type        = list(string)
-  description = "Private subnet CIDR within AZ-a"
-  default     = []
-}
-
-variable "private_subnet_interfix" {
-  type        = string
-  description = "Give interfix to private subnet name"
-  default     = "private"
-}
-
-variable "additional_tags" {
-  type        = map(string)
-  description = "Variable if additional tags are needed"
-  default     = {}
-}
-
-variable "default_route" {
-  type        = string
-  description = "Default Route from and to internet"
-  default     = "0.0.0.0/0"
+variable "private_subnet" {
+    type = list(string)
+    description = "Subnets to create for private network traffic, one per AZ"
 }

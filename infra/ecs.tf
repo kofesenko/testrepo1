@@ -28,7 +28,7 @@ resource "aws_ecs_service" "python_service" {
 }
 
 resource "aws_ecs_task_definition" "python_task" {
-  family = "service"
+  family = "python-app-service"
   container_definitions = jsonencode([
     {
       name      = var.container_name
@@ -66,7 +66,7 @@ resource "aws_launch_configuration" "ecs_launch_config" {
 #Manage autoscaling group for ecs
 resource "aws_autoscaling_group" "ecs_auto_scaling_group" {
   name                 = "asg"
-  vpc_zone_identifier  = [module.vpc_staging.subnet_staging_private_a[0], module.vpc_staging.subnet_staging_private_a[1]]
+  vpc_zone_identifier  = [module.vpc_staging.subnet_staging_private_a[0]]
   launch_configuration = aws_launch_configuration.ecs_launch_config.name
 
   desired_capacity          = 2

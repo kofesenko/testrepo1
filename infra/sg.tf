@@ -45,18 +45,18 @@ resource "aws_security_group" "staging_private" {
   vpc_id      = module.vpc_staging.vpc_id
 
   ingress {
-    description = "from staging-public"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    description     = "from staging-public"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
     security_groups = [aws_security_group.staging_public.id]
   }
 
   ingress {
-    description = "from staging-public"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    description     = "from staging-public"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     security_groups = [aws_security_group.staging_public.id]
   }
 

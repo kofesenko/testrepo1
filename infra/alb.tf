@@ -3,7 +3,7 @@ resource "aws_lb" "loadbalancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.staging_public.id]
-  subnets            = [module.vpc_staging.subnet_staging_public_a[0].id, module.vpc_staging.subnet_staging_public_a[1].id]
+  subnets            = [module.vpc_staging.public_subnet_cidr_az_a[*]]
 
   enable_deletion_protection = false
 
